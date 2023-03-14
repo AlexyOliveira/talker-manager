@@ -33,34 +33,6 @@ async function getTalkerById(id) {
   const tokenReduce = token.slice(0, 18).replace(/-/g, '');
   return tokenReduce;
 }
-// async function removeSimpsonById() {
-//   const data = await fs.readFile("./data/simpsons.json");
-//   const names = JSON.parse(data);
-//   const name = names.filter((n) => n.id !== "10" && n.id !== "6");
-
-//   fs.writeFile("./data/simpsons.json", JSON.stringify(name));
-// }
-
-// async function createSimpsonsFamilyFile() {
-//     const data = await fs.readFile("./data/simpsons.json");
-//     const names = JSON.parse(data);
-//     const familyIds = ['1', '2', '3', '4']
-//     const simpsonsFamily = names.filter((name) => familyIds.includes(name.id));
-
-//     await fs.writeFile("./data/simpsonsFamily.json", JSON.stringify(simpsonsFamily))
-//     console.log(simpsonsFamily)
-//   }
-  
-//   async function addCharacter() {
-//     const data = await fs.readFile("./data/simpsons.json");
-//     const names = JSON.parse(data);
-    
-//     names.push({id: '8', name: 'Nelson Muntz'})
-   
-//     await fs.writeFile("./data/simpsons.json", JSON.stringify(names) )
-//   }
-
-//   addCharacter();
 
 module.exports = {
     readTalkers,
