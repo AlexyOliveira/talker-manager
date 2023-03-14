@@ -7,7 +7,6 @@ async function readTalkers() {
     const data = await fs.readFile(path.resolve(__dirname, './talker.json'), 'utf-8');
     if (data) {
           const talkers = JSON.parse(data);
-    console.log(talkers);
    return talkers;
     }
     if (!data) {
