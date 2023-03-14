@@ -1,5 +1,6 @@
 const fs = require('fs').promises;
 const path = require('path');
+const { v4: uuidv4 } = require('uuid');
 
 async function readTalkers() {
   try {
@@ -17,25 +18,22 @@ async function readTalkers() {
   }
 }
 
-module.exports = {
-  readTalkers,
-};
+async function getTalkerById(id) {
+  try {
+    const data = await fs.readFile(path.resolve(__dirname, './talker.json'), 'utf-8');
+    const talkers = JSON.parse(data);
+    const talker = talkers.find((t) => t.id === Number(id));
+    return talker;
+  } catch (error) {
+    console.log(error);
+  }
+}
 
-// async function readSimpsonsNameById(id) {
-//   try {
-//     const data = await fs.readFile("./data/simpsons.json", "utf-8");
-//     const names = JSON.parse(data);
-//     const name = names.find((n) => n.id === id.toString());
-
-//     console.log(name);
-//     if (!name) {
-//       throw new Error("id não encontrado");
-//     }
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
-
+ function getTokenByUser() {
+  const token = uuidv4();
+  const tokenReduce = token.slice(0, 18).replace(/-/g, '');
+  return tokenReduce;
+}
 // async function removeSimpsonById() {
 //   const data = await fs.readFile("./data/simpsons.json");
 //   const names = JSON.parse(data);
@@ -64,3 +62,9 @@ module.exports = {
 //   }
 
 //   addCharacter();
+
+module.exports = {
+    readTalkers,
+    getTalkerById,
+    getTokenByUser,
+  };
