@@ -40,7 +40,7 @@ async function addNewTalker(talker) {
   const newTalker = { id: talkers.length + 1, ...talker };
   talkers.push(newTalker);
   await fs.writeFile(path.resolve(__dirname, './talker.json'), JSON.stringify(talkers, null, 2));
-  console.log(talkers);
+  return newTalker;
 }
 
 module.exports = {

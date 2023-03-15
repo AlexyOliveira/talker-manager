@@ -101,6 +101,20 @@ const validateAge = (req, res, next) => {
   next();
  };
 
+ const tokenVerify = (req, res, next) => {
+   const { authorization } = req.headers;
+   const noToken = { message: 'Token não encontrado' };
+   const invalidToken = { message: 'Token inválido' };
+ if (!authorization) {
+  return res.status(401).json(noToken);
+ }
+ if (authorization.length < 16 || authorization.length > 16 || typeof authorization !== 'string') {
+  return res.status(401).json(invalidToken);
+ }
+
+  next();
+ };
+
 // rotas
 
 app.get('/talker', async (req, res) => {
@@ -126,8 +140,11 @@ app.get('/talker/:id', async (req, res) => {
    return res.status(200).json({ token });
     });
 
-    app.post('/talker', validateName, validateAge, validateTalk, validateRate, async (req, res) => {
-      const newTalker = req.body;
-      await addNewTalker(newTalker);
-      return res.status(200).json({ newTalker });
-       });
+  app.post('/talker',
+   tokenVerify, validateName,
+    validateAge, validateTalk,
+     validateRate, async (req, res) => {
+    const newTalker = req.body;
+   const talker = await addNewTalker(newTalker);
+    return res.status(201).json(talker);
+      });
