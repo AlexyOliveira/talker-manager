@@ -16,6 +16,7 @@ const {
   addNewTalker,
   changeTalkerInfoById,
   deleteTalker,
+  searchTalker,
 } = require('./apiHandle');
 
 const app = express();
@@ -35,6 +36,13 @@ app.listen(PORT, () => {
 
 app.get('/talker', async (req, res) => {
   const talkers = await readTalkers();
+  return res.status(200).json(talkers);
+});
+
+app.get('/talker/search', tokenVerify, async (req, res) => {
+  const { q } = req.query;
+ const talkers = await searchTalker(q);
+ console.log(talkers);
   return res.status(200).json(talkers);
 });
 

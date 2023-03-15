@@ -74,7 +74,17 @@ async function deleteTalker(id) {
   }
 }
 
-deleteTalker(3);
+async function searchTalker(param) {
+  try {
+    const data = await fs.readFile(path.resolve(__dirname, TALKER_DIR), 'utf-8');
+    const talkers = JSON.parse(data);
+    const talker = talkers.filter((t) => (
+      t.name.includes(param.toUpperCase()) || t.name.includes(param.toLowerCase())));
+    return talker;
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 module.exports = {
     readTalkers,
@@ -83,4 +93,5 @@ module.exports = {
     addNewTalker,
     changeTalkerInfoById,
     deleteTalker,
+    searchTalker,
   };
