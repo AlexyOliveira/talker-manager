@@ -34,8 +34,18 @@ async function getTalkerById(id) {
   return tokenReduce;
 }
 
+async function addNewTalker(talker) {
+  const data = await fs.readFile(path.resolve(__dirname, './talker.json'), 'utf-8');
+  const talkers = JSON.parse(data);
+  const newTalker = { id: talkers.length + 1, ...talker };
+  talkers.push(newTalker);
+  await fs.writeFile(path.resolve(__dirname, './talker.json'), JSON.stringify(talkers, null, 2));
+  console.log(talkers);
+}
+
 module.exports = {
     readTalkers,
     getTalkerById,
     getTokenByUser,
+    addNewTalker,
   };
