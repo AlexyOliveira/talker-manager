@@ -2,9 +2,11 @@ const fs = require('fs').promises;
 const path = require('path');
 const { v4: uuidv4 } = require('uuid');
 
+const TALKER_DIR = './talker.json';
+
 async function readTalkers() {
   try {
-    const data = await fs.readFile(path.resolve(__dirname, './talker.json'), 'utf-8');
+    const data = await fs.readFile(path.resolve(__dirname, TALKER_DIR), 'utf-8');
     if (data) {
           const talkers = JSON.parse(data);
    return talkers;
@@ -19,9 +21,10 @@ async function readTalkers() {
 
 async function getTalkerById(id) {
   try {
-    const data = await fs.readFile(path.resolve(__dirname, './talker.json'), 'utf-8');
+    const data = await fs.readFile(path.resolve(__dirname, TALKER_DIR), 'utf-8');
     const talkers = JSON.parse(data);
     const talker = talkers.find((t) => t.id === Number(id));
+    console.log(talker);
     return talker;
   } catch (error) {
     console.log(error);
@@ -35,12 +38,29 @@ async function getTalkerById(id) {
 }
 
 async function addNewTalker(talker) {
-  const data = await fs.readFile(path.resolve(__dirname, './talker.json'), 'utf-8');
+  const data = await fs.readFile(path.resolve(__dirname, TALKER_DIR), 'utf-8');
   const talkers = JSON.parse(data);
   const newTalker = { id: talkers.length + 1, ...talker };
   talkers.push(newTalker);
-  await fs.writeFile(path.resolve(__dirname, './talker.json'), JSON.stringify(talkers, null, 2));
+  await fs.writeFile(path.resolve(__dirname, TALKER_DIR), JSON.stringify(talkers, null, 2));
   return newTalker;
+}
+
+async function changeTalkerInfoById(id, name, age, talk) {
+  try {
+    const data = await fs.readFile(path.resolve(__dirname, TALKER_DIR), 'utf-8');
+    const talkers = JSON.parse(data);
+    const talker = talkers.find((t) => t.id === Number(id));
+    talker.name = name;
+    talker.age = age;
+    talker.talk = talk;
+    const f = talkers.filter((t) => t.id !== Number(id));
+    f.push(talker);
+    await fs.writeFile(path.resolve(__dirname, TALKER_DIR), JSON.stringify(f, null, 2));
+    return talker;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 module.exports = {
@@ -48,4 +68,5 @@ module.exports = {
     getTalkerById,
     getTokenByUser,
     addNewTalker,
+    changeTalkerInfoById,
   };
