@@ -63,10 +63,24 @@ async function changeTalkerInfoById(id, name, age, talk) {
   }
 }
 
+async function deleteTalker(id) {
+  try {
+    const data = await fs.readFile(path.resolve(__dirname, TALKER_DIR), 'utf-8');
+    const talkers = JSON.parse(data);
+    const talker = talkers.filter((t) => t.id !== Number(id));
+    await fs.writeFile(path.resolve(__dirname, TALKER_DIR), JSON.stringify(talker, null, 2));
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+deleteTalker(3);
+
 module.exports = {
     readTalkers,
     getTalkerById,
     getTokenByUser,
     addNewTalker,
     changeTalkerInfoById,
+    deleteTalker,
   };

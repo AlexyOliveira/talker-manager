@@ -15,6 +15,7 @@ const {
   getTokenByUser,
   addNewTalker,
   changeTalkerInfoById,
+  deleteTalker,
 } = require('./apiHandle');
 
 const app = express();
@@ -84,3 +85,9 @@ app.put(
     return res.status(200).json(talkerEdited);
   },
 );
+
+app.delete('/talker/:id', tokenVerify, (req, res) => {
+  const { id } = req.params;
+  deleteTalker(id);
+  return res.status(204).json();
+});
