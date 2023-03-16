@@ -74,19 +74,19 @@ async function deleteTalker(id) {
   }
 }
 
-async function searchTalker(q, rate) {
+async function searchTalker(q, rate, date) {
    const data = await fs.readFile(path.resolve(__dirname, TALKER_DIR), 'utf-8');
     let talkers = JSON.parse(data);
   try {
     if (q) {
-    //    const talker = talkers.filter((t) => (
-    //   t.name.toLowerCase().includes(q.toUpperCase()) || t.name.includes(q.toLowerCase())));
-    // return talker;
    talkers = talkers
       .filter((t) => t.name.toLowerCase().includes(q.toLowerCase()));
     }
     if (rate) {
       talkers = talkers.filter((t) => t.talk.rate === Number(rate));
+    }
+    if (date) {
+      talkers = talkers.filter((t) => t.talk.watchedAt === date);
     }
     return talkers;
   } catch (error) {
