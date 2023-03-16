@@ -9,6 +9,7 @@ const {
   tokenVerify,
   validateTalkerById,
   validateRateSearchingByRate,
+  validateRateChangingById,
 } = require('./middleWares');
 const {
   readTalkers,
@@ -16,6 +17,7 @@ const {
   getTokenByUser,
   addNewTalker,
   changeTalkerInfoById,
+  changeTalkerRateInfoById,
   deleteTalker,
   searchTalker,
 } = require('./apiHandle');
@@ -101,5 +103,12 @@ app.put(
 app.delete('/talker/:id', tokenVerify, (req, res) => {
   const { id } = req.params;
   deleteTalker(id);
+  return res.status(204).json();
+});
+
+app.patch('/talker/rate/:id', tokenVerify, validateRateChangingById, (req, res) => {
+  const { rate } = req.body;
+  const { id } = req.params;
+  changeTalkerRateInfoById(id, rate);
   return res.status(204).json();
 });

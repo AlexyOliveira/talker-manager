@@ -94,12 +94,29 @@ async function searchTalker(q, rate, date) {
   }
 }
 
+async function changeTalkerRateInfoById(id, rate) {
+  try {
+    const data = await fs.readFile(path.resolve(__dirname, TALKER_DIR), 'utf-8');
+    const talkers = JSON.parse(data);
+    const talker = talkers.find((t) => t.id === Number(id));
+    talker.talk.rate = rate;
+    const f = talkers.filter((t) => t.id !== Number(id));
+    f.push(talker);
+    await fs.writeFile(path.resolve(__dirname, TALKER_DIR), JSON.stringify(f, null, 2));
+    return talker;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+changeTalkerRateInfoById(1, 3);
 module.exports = {
     readTalkers,
     getTalkerById,
     getTokenByUser,
     addNewTalker,
     changeTalkerInfoById,
+    changeTalkerRateInfoById,
     deleteTalker,
     searchTalker,
   };

@@ -1,6 +1,4 @@
-const {
-    getTalkerById,
-  } = require('./apiHandle');
+const { getTalkerById } = require('./apiHandle');
 
 const validateEmailLogin = (req, res, next) => {
   const { email } = req.body;
@@ -129,11 +127,26 @@ const tokenVerify = (req, res, next) => {
 };
 
 const validateTalkerById = async (req, res, next) => {
-    const message = { message: 'Pessoa palestrante não encontrada' };
-    const { id } = req.params;
+  const message = { message: 'Pessoa palestrante não encontrada' };
+  const { id } = req.params;
   const talker = await getTalkerById(id);
   if (!talker) {
     return res.status(404).send(message);
+  }
+  next();
+};
+
+const validateRateChangingById = async (req, res, next) => {
+  const { rate } = req.body;
+  const message = { message: 'O campo "rate" é obrigatório' };
+  const rateBetween1and5 = {
+    message: 'O campo "rate" deve ser um número inteiro entre 1 e 5',
+  };
+  if (rate === undefined) {
+    return res.status(400).send(message);
+  }
+  if (rate < 1 || rate > 5 || !Number.isInteger(rate)) {
+    return res.status(400).json(rateBetween1and5);
   }
   next();
 };
@@ -148,4 +161,5 @@ module.exports = {
   tokenVerify,
   validateTalkerById,
   validateRateSearchingByRate,
+  validateRateChangingById,
 };
