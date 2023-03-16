@@ -95,6 +95,21 @@ const validateRate = (req, res, next) => {
   next();
 };
 
+const validateRateSearchingByRate = (req, res, next) => {
+  const { rate } = req.query;
+  const rateToNUmber = Number(rate);
+  const rateBetween1and5 = {
+    message: 'O campo "rate" deve ser um número inteiro entre 1 e 5',
+  };
+  if (!rate) {
+    return next();
+  }
+  if (rate < 1 || rate > 5 || !Number.isInteger(rateToNUmber)) {
+    return res.status(400).json(rateBetween1and5);
+  }
+  next();
+};
+
 const tokenVerify = (req, res, next) => {
   const { authorization } = req.headers;
   const noToken = { message: 'Token não encontrado' };
@@ -132,4 +147,5 @@ module.exports = {
   validateRate,
   tokenVerify,
   validateTalkerById,
+  validateRateSearchingByRate,
 };

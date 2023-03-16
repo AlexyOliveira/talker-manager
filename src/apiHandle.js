@@ -74,13 +74,21 @@ async function deleteTalker(id) {
   }
 }
 
-async function searchTalker(param) {
+async function searchTalker(q, rate) {
+   const data = await fs.readFile(path.resolve(__dirname, TALKER_DIR), 'utf-8');
+    let talkers = JSON.parse(data);
   try {
-    const data = await fs.readFile(path.resolve(__dirname, TALKER_DIR), 'utf-8');
-    const talkers = JSON.parse(data);
-    const talker = talkers.filter((t) => (
-      t.name.includes(param.toUpperCase()) || t.name.includes(param.toLowerCase())));
-    return talker;
+    if (q) {
+    //    const talker = talkers.filter((t) => (
+    //   t.name.toLowerCase().includes(q.toUpperCase()) || t.name.includes(q.toLowerCase())));
+    // return talker;
+   talkers = talkers
+      .filter((t) => t.name.toLowerCase().includes(q.toLowerCase()));
+    }
+    if (rate) {
+      talkers = talkers.filter((t) => t.talk.rate === Number(rate));
+    }
+    return talkers;
   } catch (error) {
     console.log(error);
   }

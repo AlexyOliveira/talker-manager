@@ -8,6 +8,7 @@ const {
   validateRate,
   tokenVerify,
   validateTalkerById,
+  validateRateSearchingByRate,
 } = require('./middleWares');
 const {
   readTalkers,
@@ -39,10 +40,9 @@ app.get('/talker', async (req, res) => {
   return res.status(200).json(talkers);
 });
 
-app.get('/talker/search', tokenVerify, async (req, res) => {
-  const { q } = req.query;
- const talkers = await searchTalker(q);
- console.log(talkers);
+app.get('/talker/search', tokenVerify, validateRateSearchingByRate, async (req, res) => {
+  const { q, rate, date } = req.query;
+ const talkers = await searchTalker(q, rate, date);
   return res.status(200).json(talkers);
 });
 
