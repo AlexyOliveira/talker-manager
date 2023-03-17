@@ -1,4 +1,6 @@
 const express = require('express');
+const connection = require('./connection');
+require('dotenv').config();
 const {
   validateEmailLogin,
   validatePsswordLogin,
@@ -20,6 +22,7 @@ const {
   changeTalkerRateInfoById,
   deleteTalker,
   searchTalker,
+  getTalkersDb,
 } = require('./apiHandle');
 
 const app = express();
@@ -33,8 +36,12 @@ app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   console.log('Online');
+  const [result] = await connection.execute('SELECT 1');
+  if (result) {
+    console.log('MySQL connection OK');
+  }
 });
 
 app.get('/talker', async (req, res) => {
@@ -52,6 +59,11 @@ app.get('/talker/search', tokenVerify, validateRateSearchingByRate, async (req, 
   return res.status(200).json(talkers);
 });
 
+app.get('/talker/db', async (req, res) => {
+  const talkers = await getTalkersDb();
+  console.log(talkers);
+  return res.status(200).json(talkers);
+});
 app.get('/talker/:id', async (req, res) => {
   const { id } = req.params;
   const talker = await getTalkerById(id);

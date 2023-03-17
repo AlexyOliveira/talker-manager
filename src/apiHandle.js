@@ -1,6 +1,7 @@
 const fs = require('fs').promises;
 const path = require('path');
 const { v4: uuidv4 } = require('uuid');
+const connection = require('./connection');
 
 const TALKER_DIR = './talker.json';
 
@@ -109,6 +110,20 @@ async function changeTalkerRateInfoById(id, rate) {
   }
 }
 
+const getTalkersDb = async () => {
+  const [talkers] = await connection.execute('SELECT * FROM talkers');
+  const talkersFormated = talkers.map((c) => ({
+    name: c.name,
+    age: c.age,
+    id: c.id,
+    talk: {
+      watchedAt: c.talk_watched_at,
+      rate: c.talk_rate,
+    },
+  }));
+  return talkersFormated;
+};
+
 changeTalkerRateInfoById(1, 3);
 module.exports = {
     readTalkers,
@@ -119,4 +134,5 @@ module.exports = {
     changeTalkerRateInfoById,
     deleteTalker,
     searchTalker,
+    getTalkersDb,
   };
