@@ -2,9 +2,9 @@
 
   Neste projeto desenvolvi habilidades de:
 
-  - Ussar bibliotecas do npm;
+  - Usar bibliotecas do npm;
   - Fazer o C.R.U.D em um banco de dados;
   - Organizar com MiddleWares;
   - Utilizar node
-  - Usar fs pra escrever em arquivos
+  - Usar o fs pra escrever em arquivos
 
